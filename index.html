@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#f3eee7">
+<title>动物人格测试｜你的灵魂是什么小动物？</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,body{
+    width:100%;
+    min-height:100%;
+}
+
+body{
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "PingFang SC",
+        "Hiragino Sans GB",
+        "Microsoft YaHei",
+        sans-serif;
+    background:#eee9e2;
+    color:#332d28;
+    overflow-x:hidden;
+}
+
+button,input{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+/* ================= 背景 ================= */
+
+.page{
+    position:relative;
+    min-height:100vh;
+    overflow:hidden;
+}
+
+.page::before{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    background:rgba(182,158,130,.13);
+    filter:blur(80px);
+    top:-180px;
+    left:-160px;
+    pointer-events:none;
+}
+
+.page::after{
+    content:"";
+    position:fixed;
+    width:420px;
+    height:420px;
+    border-radius:50%;
+    background:rgba(130,115,100,.10);
+    filter:blur(90px);
+    right:-160px;
+    bottom:-130px;
+    pointer-events:none;
+}
+
+/* ================= 通用 ================= */
+
+.screen{
+    display:none;
+    min-height:100vh;
+    position:relative;
+    z-index:2;
+}
+
+.screen.active{
+    display:flex;
+}
+
+.container{
+    width:min(900px,92%);
+    margin:auto;
+}
+
+/* ================= 密码页 ================= */
+
+#passwordPage{
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+
+.password-card{
+    width:min(500px,92%);
+    padding:58px 34px 50px;
+    background:rgba(255,255,255,.58);
+    border:1px solid rgba(110,95,80,.16);
+    border-radius:28px;
+    box-shadow:
+        0 25px 70px rgba(75,60,45,.12),
+        inset 0 1px 0 rgba(255,255,255,.8);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+}
+
+.logo-small{
+    font-size:13px;
+    letter-spacing:5px;
+    color:#88796b;
+    margin-bottom:25px;
+}
+
+.paw{
+    font-size:52px;
+    margin-bottom:22px;
+}
+
+.password-card h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:35px;
+    font-weight:400;
+    letter-spacing:2px;
+    margin-bottom:12px;
+}
+
+.password-card .subtitle{
+    color:#8b8178;
+    font-size:13px;
+    letter-spacing:2px;
+    margin-bottom:38px;
+}
+
+.code-input{
+    width:100%;
+    height:60px;
+    border:1px solid #d7cec3;
+    background:rgba(255,255,255,.72);
+    border-radius:15px;
+    text-align:center;
+    font-size:24px;
+    letter-spacing:12px;
+    color:#443a32;
+    outline:none;
+    transition:.3s;
+    position:relative;
+    z-index:10;
+    pointer-events:auto;
+    user-select:text;
+    -webkit-user-select:text;
+}
+
+.code-input:focus{
+    border-color:#9b8978;
+    box-shadow:0 0 0 4px rgba(155,137,120,.1);
+}
+
+.enter-btn,
+.start-btn,
+.next-btn,
+.restart-btn{
+    border:none;
+    background:#40372f;
+    color:white;
+    height:56px;
+    border-radius:15px;
+    width:100%;
+    font-size:14px;
+    letter-spacing:4px;
+    margin-top:16px;
+    transition:.3s;
+}
+
+.enter-btn:hover,
+.start-btn:hover,
+.next-btn:hover,
+.restart-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 25px rgba(60,50,40,.18);
+}
+
+.error{
+    height:20px;
+    margin-top:13px;
+    color:#a55d52;
+    font-size:13px;
+}
+
+/* ================= 开始页 ================= */
+
+#introPage{
+    align-items:center;
+}
+
+.intro{
+    text-align:center;
+    padding:60px 0;
+}
+
+.eyebrow{
+    font-size:11px;
+    letter-spacing:6px;
+    color:#8f8173;
+    margin-bottom:24px;
+}
+
+.intro-animal{
+    font-size:78px;
+    margin-bottom:20px;
+    animation:float 4s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-10px)}
+}
+
+.intro h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-weight:400;
+    font-size:clamp(38px,7vw,68px);
+    letter-spacing:3px;
+    line-height:1.15;
+    margin-bottom:20px;
+}
+
+.intro-description{
+    max-width:560px;
+    margin:0 auto;
+    line-height:2;
+    color:#766c63;
+    font-size:14px;
+}
+
+.intro-line{
+    width:50px;
+    height:1px;
+    background:#a89887;
+    margin:35px auto;
+}
+
+.info-row{
+    display:flex;
+    justify-content:center;
+    gap:45px;
+    color:#8a7d70;
+    font-size:12px;
+    letter-spacing:2px;
+}
+
+.start-btn{
+    max-width:280px;
+    margin-top:40px;
+}
+
+/* ================= 测试页 ================= */
+
+#quizPage{
+    align-items:center;
+}
+
+.quiz-wrap{
+    width:min(760px,92%);
+    margin:auto;
+    padding:50px 0;
+}
+
+.quiz-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+    color:#8d8073;
+    font-size:12px;
+    letter-spacing:2px;
+}
+
+.progress{
+    width:100%;
+    height:3px;
+    background:#d8d0c7;
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:50px;
+}
+
+.progress-bar{
+    height:100%;
+    background:#6f6256;
+    width:0%;
+    transition:.5s ease;
+}
+
+.question-number{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:14px;
+    color:#a08f7f;
+    margin-bottom:18px;
+}
+
+.question{
+    font-size:clamp(23px,4vw,34px);
+    line-height:1.55;
+    font-weight:400;
+    margin-bottom:38px;
+}
+
+.options{
+    display:flex;
+    flex-direction:column;
+    gap:13px;
+}
+
+.option{
+    position:relative;
+    border:1px solid #d7cec4;
+    background:rgba(255,255,255,.5);
+    border-radius:16px;
+    padding:19px 20px;
+    min-height:62px;
+    text-align:left;
+    color:#50473f;
+    font-size:14px;
+    line-height:1.7;
+    transition:.25s;
+}
+
+.option:hover{
+    border-color:#9d8c7b;
+    background:rgba(255,255,255,.82);
+    transform:translateX(4px);
+}
+
+.option.selected{
+    border-color:#64564a;
+    background:#5a4d43;
+    color:#fff;
+    box-shadow:0 10px 25px rgba(70,55,45,.15);
+}
+
+.option-letter{
+    display:inline-flex;
+    width:28px;
+    height:28px;
+    align-items:center;
+    justify-content:center;
+    border:1px solid currentColor;
+    border-radius:50%;
+    margin-right:12px;
+    font-size:11px;
+    opacity:.7;
+}
+
+.next-btn{
+    margin-top:30px;
+    display:none;
+}
+
+.next-btn.show{
+    display:block;
+}
+
+/* ================= 结果页 ================= */
+
+#resultPage{
+    align-items:flex-start;
+}
+
+.result-wrap{
+    width:min(900px,92%);
+    margin:auto;
+    padding:55px 0 70px;
+}
+
+.result-header{
+    text-align:center;
+    margin-bottom:38px;
+}
+
+.result-small{
+    color:#97887a;
+    letter-spacing:5px;
+    font-size:10px;
+    margin-bottom:22px;
+}
+
+.result-animal{
+    font-size:100px;
+    margin-bottom:10px;
+    animation:resultPop .8s ease;
+}
+
+@keyframes resultPop{
+    0%{
+        opacity:0;
+        transform:scale(.7) translateY(20px);
+    }
+    100%{
+        opacity:1;
+        transform:scale(1) translateY(0);
+    }
+}
+
+.result-header h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(38px,7vw,65px);
+    font-weight:400;
+    letter-spacing:2px;
+    margin-bottom:8px;
+}
+
+.result-en{
+    font-size:11px;
+    letter-spacing:5px;
+    color:#9b8c7e;
+}
+
+.result-card{
+    background:rgba(255,255,255,.58);
+    border:1px solid rgba(110,95,80,.15);
+    border-radius:28px;
+    padding:42px;
+    box-shadow:0 25px 70px rgba(75,60,45,.10);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+}
+
+.result-intro{
+    text-align:center;
+    font-size:16px;
+    line-height:2.1;
+    color:#625950;
+    max-width:700px;
+    margin:0 auto 38px;
+}
+
+.divider{
+    width:100%;
+    height:1px;
+    background:#ded6cd;
+    margin:30px 0;
+}
+
+.section-title{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:22px;
+    font-weight:400;
+    margin-bottom:23px;
+}
+
+.tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    margin-bottom:32px;
+}
+
+.tag{
+    padding:8px 14px;
+    border-radius:30px;
+    background:#ece5dd;
+    color:#76685b;
+    font-size:12px;
+}
+
+.traits{
+    display:flex;
+    flex-direction:column;
+    gap:19px;
+    margin-bottom:35px;
+}
+
+.trait-row{
+    display:grid;
+    grid-template-columns:85px 1fr 40px;
+    align-items:center;
+    gap:14px;
+    font-size:12px;
+    color:#75695e;
+}
+
+.trait-bar{
+    height:7px;
+    border-radius:10px;
+    background:#e2dbd3;
+    overflow:hidden;
+}
+
+.trait-fill{
+    height:100%;
+    width:0;
+    background:#756558;
+    border-radius:10px;
+    animation:barIn 1.2s ease forwards;
+}
+
+@keyframes barIn{
+    from{width:0}
+}
+
+.love-box{
+    background:#f0ebe5;
+    border-radius:18px;
+    padding:25px;
+    margin-bottom:25px;
+}
+
+.love-box h3{
+    font-size:13px;
+    letter-spacing:2px;
+    margin-bottom:12px;
+}
+
+.love-box p{
+    color:#71665d;
+    font-size:13px;
+    line-height:2;
+}
+
+.quote{
+    text-align:center;
+    padding:20px 10px;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:20px;
+    line-height:1.8;
+    color:#51473f;
+}
+
+.result-actions{
+    display:flex;
+    gap:12px;
+    margin-top:25px;
+}
+
+.result-actions button{
+    flex:1;
+}
+
+.share-btn{
+    height:55px;
+    border-radius:15px;
+    border:1px solid #cfc4b9;
+    background:rgba(255,255,255,.6);
+    color:#665a50;
+    letter-spacing:2px;
+}
+
+.restart-btn{
+    margin-top:0;
+}
+
+/* ================= 手机 ================= */
+
+@media(max-width:600px){
+
+    .password-card{
+        padding:45px 22px 38px;
+    }
+
+    .password-card h1{
+        font-size:28px;
+    }
+
+    .intro{
+        padding:40px 0;
+    }
+
+    .intro-animal{
+        font-size:65px;
+    }
+
+    .intro h1{
+        font-size:38px;
+    }
+
+    .info-row{
+        gap:20px;
+    }
+
+    .quiz-wrap{
+        padding:35px 0 45px;
+    }
+
+    .progress{
+        margin-bottom:35px;
+    }
+
+    .question{
+        font-size:23px;
+        margin-bottom:28px;
+    }
+
+    .option{
+        padding:16px 14px;
+    }
+
+    .result-wrap{
+        padding:35px 0 50px;
+    }
+
+    .result-animal{
+        font-size:75px;
+    }
+
+    .result-card{
+        padding:25px 20px;
+        border-radius:22px;
+    }
+
+    .result-intro{
+        font-size:14px;
+    }
+
+    .trait-row{
+        grid-template-columns:65px 1fr 35px;
+        gap:8px;
+    }
+
+    .result-actions{
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+<!-- ================= 密码页 ================= -->
+
+<section id="passwordPage" class="screen active">
+
+    <div class="password-card">
+
+        <div class="logo-small">SOUL ANIMAL ARCHIVE</div>
+
+        <div class="paw">🐾</div>
+
+        <h1>灵魂动物档案</h1>
+
+        <div class="subtitle">ENTER YOUR ACCESS CODE</div>
+
+        <input
+            id="codeInput"
+            class="code-input"
+            type="text"
+            inputmode="numeric"
+            autocomplete="off"
+            maxlength="4"
+            placeholder="••••"
+        >
+
+        <button id="enterBtn" class="enter-btn">
+            开启测试
+        </button>
+
+        <div id="errorText" class="error"></div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= 首页 ================= -->
+
+<section id="introPage" class="screen">
+
+    <div class="container">
+
+        <div class="intro">
+
+            <div class="eyebrow">
+                SOUL ANIMAL PERSONALITY TEST
+            </div>
+
+            <div class="intro-animal">🐾</div>
+
+            <h1>
+                你的灵魂<br>
+                是什么小动物？
+            </h1>
+
+            <p class="intro-description">
+                如果把你的性格、情绪、爱情观和隐藏的一面，
+                全部变成一种小动物……
+                <br>
+                你会是什么？
+            </p>
+
+            <div class="intro-line"></div>
+
+            <div class="info-row">
+                <span>18 QUESTIONS</span>
+                <span>12 ANIMALS</span>
+                <span>≈ 3 MIN</span>
+            </div>
+
+            <button id="startBtn" class="start-btn">
+                开始探索我的灵魂
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= 测试页 ================= -->
+
+<section id="quizPage" class="screen">
+
+    <div class="quiz-wrap">
+
+        <div class="quiz-top">
+            <span>SOUL ANIMAL</span>
+            <span id="progressText">01 / 18</span>
+        </div>
+
+        <div class="progress">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+
+        <div id="questionNumber" class="question-number">
+            QUESTION 01
+        </div>
+
+        <div id="questionText" class="question"></div>
+
+        <div id="options" class="options"></div>
+
+        <button id="nextBtn" class="next-btn">
+            下一题
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= 结果页 ================= -->
+
+<section id="resultPage" class="screen">
+
+    <div class="result-wrap">
+
+        <div class="result-header">
+
+            <div class="result-small">
+                YOUR SOUL ANIMAL IS
+            </div>
+
+            <div id="resultAnimal" class="result-animal"></div>
+
+            <h1 id="resultName"></h1>
+
+            <div id="resultEn" class="result-en"></div>
+
+        </div>
+
+        <div class="result-card">
+
+            <p id="resultIntro" class="result-intro"></p>
+
+            <div class="divider"></div>
+
+            <h2 class="section-title">
+                你的灵魂关键词
+            </h2>
+
+            <div id="resultTags" class="tags"></div>
+
+            <h2 class="section-title">
+                人格倾向
+            </h2>
+
+            <div id="traits" class="traits"></div>
+
+            <div class="love-box">
+
+                <h3>你的相处方式</h3>
+
+                <p id="resultLove"></p>
+
+            </div>
+
+            <div class="love-box">
+
+                <h3>隐藏属性</h3>
+
+                <p id="resultHidden"></p>
+
+            </div>
+
+            <div class="quote" id="resultQuote"></div>
+
+        </div>
+
+        <div class="result-actions">
+
+            <button id="shareBtn" class="share-btn">
+                复制我的结果
+            </button>
+
+            <button id="restartBtn" class="restart-btn">
+                重新测试
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+</div>
+<script>
+
+/* =========================================================
+   基础设置
+========================================================= */
+
+const ACCESS_CODE = "2121";
+
+const screens = {
+    password: document.getElementById("passwordPage"),
+    intro: document.getElementById("introPage"),
+    quiz: document.getElementById("quizPage"),
+    result: document.getElementById("resultPage")
+};
+
+function showScreen(name){
+
+    Object.values(screens).forEach(screen=>{
+        screen.classList.remove("active");
+    });
+
+    screens[name].classList.add("active");
+
+    window.scrollTo({
+        top:0,
+        behavior:"instant"
+    });
+}
+
+
+/* =========================================================
+   密码
+========================================================= */
+
+const codeInput = document.getElementById("codeInput");
+const enterBtn = document.getElementById("enterBtn");
+const errorText = document.getElementById("errorText");
+
+function checkCode(){
+
+    const value = codeInput.value.trim();
+
+    if(value === ACCESS_CODE){
+
+        errorText.textContent = "";
+
+        showScreen("intro");
+
+    }else{
+
+        errorText.textContent = "提取码不正确，请重新输入";
+
+        codeInput.value = "";
+
+        codeInput.focus();
+
+    }
+}
+
+enterBtn.addEventListener("click",checkCode);
+
+codeInput.addEventListener("keydown",function(e){
+
+    if(e.key === "Enter"){
+        checkCode();
+    }
+
+});
+
+
+/* =========================================================
+   12种动物人格
+========================================================= */
+
+const animals = [
+
+{
+    id:"cat",
+    name:"猫咪",
+    en:"THE CAT",
+    emoji:"🐈",
+
+    intro:"你的灵魂是一只猫。你不是真的冷淡，只是你很清楚自己的世界应该交给谁。你慢热、敏感、有边界感，不喜欢把情绪轻易摊开。可一旦认定一个人，你会比任何人想象得都要柔软。",
+
+    tags:["慢热","边界感","敏感","嘴硬心软"],
+
+    traits:{
+        "敏感度":92,
+        "独立性":88,
+        "依赖感":65,
+        "浪漫度":76
+    },
+
+    love:"你需要的是一种舒服的关系。不是时时刻刻黏在一起，而是即使彼此安静，也知道对方没有离开。你不太擅长直接说“我想你”，却会用很多细节表达在乎。",
+
+    hidden:"越是在乎的人面前，你反而越容易变得幼稚。嘴上说着随便，其实对方一句话都可能在你心里反复播放很多遍。",
+
+    quote:"“我不是不需要你，我只是希望你愿意主动走近我。”"
+},
+
+{
+    id:"dog",
+    name:"小狗",
+    en:"THE PUPPY",
+    emoji:"🐕",
+
+    intro:"你的灵魂是一只小狗。你拥有非常直接而热烈的情感，喜欢一个人就是喜欢，不太愿意绕太多弯。你愿意陪伴，也很珍惜被坚定选择的感觉。",
+
+    tags:["热烈","忠诚","直球","陪伴"],
+
+    traits:{
+        "敏感度":78,
+        "独立性":61,
+        "依赖感":94,
+        "浪漫度":86
+    },
+
+    love:"你在关系里非常看重回应。对方愿意告诉你发生了什么、愿意分享生活，你就会获得很大的安全感。你真正需要的不是轰轰烈烈，而是“我一直都在”。",
+
+    hidden:"你看起来很好哄，其实最难过的时候反而不会说。你越喜欢一个人，越容易把对方的一点点冷淡放大。",
+
+    quote:"“喜欢一个人，就是想把今天遇到的所有小事都告诉你。”"
+},
+
+{
+    id:"fox",
+    name:"狐狸",
+    en:"THE FOX",
+    emoji:"🦊",
+
+    intro:"你的灵魂是一只狐狸。聪明、敏锐、会观察，也非常懂得保护自己。你很少因为一时冲动进入一段关系，而是会默默观察对方很久。",
+
+    tags:["聪明","洞察","谨慎","神秘"],
+
+    traits:{
+        "敏感度":86,
+        "独立性":93,
+        "依赖感":48,
+        "浪漫度":72
+    },
+
+    love:"你喜欢有脑子、有趣、有分寸的人。你不喜欢被控制，更不喜欢别人试图强行进入你的私人世界。真正让你心动的，是一个懂得尊重你边界的人。",
+
+    hidden:"你比自己承认的更容易心软。很多时候你嘴上已经说服自己放下了，实际上却还在偷偷关注。",
+
+    quote:"“我看起来什么都知道，其实只是因为我太害怕看错人。”"
+},
+
+{
+    id:"rabbit",
+    name:"兔子",
+    en:"THE RABBIT",
+    emoji:"🐰",
+
+    intro:"你的灵魂是一只兔子。你拥有很柔软的内心，对情绪和细节尤其敏感。你不喜欢争吵，也不喜欢伤害别人，可这并不意味着你没有自己的底线。",
+
+    tags:["温柔","细腻","治愈","共情"],
+
+    traits:{
+        "敏感度":96,
+        "独立性":65,
+        "依赖感":82,
+        "浪漫度":91
+    },
+
+    love:"你需要温柔而稳定的关系。一个人的语气、一个突然的拥抱、记不记得你随口说过的话，都比昂贵的礼物更容易打动你。",
+
+    hidden:"你经常习惯性照顾别人的情绪，却忘了问问自己到底开不开心。你真正需要学会的是把自己也放进被爱的人群里。",
+
+    quote:"“柔软不是弱点，是你看过世界以后依然选择温柔。”"
+},
+
+{
+    id:"bear",
+    name:"小熊",
+    en:"THE BEAR",
+    emoji:"🐻",
+
+    intro:"你的灵魂是一只小熊。你给人的感觉通常很可靠、很温暖。你不一定是人群里最会说话的人，却经常成为大家下意识想靠近的那个人。",
+
+    tags:["可靠","温暖","包容","守护"],
+
+    traits:{
+        "敏感度":74,
+        "独立性":76,
+        "依赖感":70,
+        "浪漫度":79
+    },
+
+    love:"你表达爱意的方式非常实际。与其说一百句“我爱你”，你更愿意在对方需要的时候出现。你对长期关系的耐心通常比自己想象中更强。",
+
+    hidden:"你很少向别人索取，所以别人很容易忘记你其实也会累。你不是永远不需要被照顾，只是习惯了成为那个照顾别人的人。",
+
+    quote:"“如果你累了，就到我这里来吧。”"
+},
+
+{
+    id:"deer",
+    name:"小鹿",
+    en:"THE DEER",
+    emoji:"🦌",
+
+    intro:"你的灵魂是一只小鹿。你对世界保留着一种细腻而浪漫的感受力。你容易被一句话、一个眼神、一次偶然的温柔打动。",
+
+    tags:["浪漫","敏感","纯粹","细节控"],
+
+    traits:{
+        "敏感度":95,
+        "独立性":68,
+        "依赖感":79,
+        "浪漫度":98
+    },
+
+    love:"你喜欢有仪式感的关系，但你真正想要的并不是昂贵礼物，而是被认真对待。你希望有人记得那些只有你自己才会在意的小细节。",
+
+    hidden:"你很容易在心里提前演完一整部电影，所以有时会因为自己想象中的情节而难过。",
+
+    quote:"“我喜欢的从来不是盛大的浪漫，而是你记得。”"
+},
+
+{
+    id:"squirrel",
+    name:"松鼠",
+    en:"THE SQUIRREL",
+    emoji:"🐿️",
+
+    intro:"你的灵魂是一只松鼠。你对生活有非常强的好奇心，总能从普通的一天里找到一些值得开心的小东西。你喜欢收集快乐，也喜欢把快乐分享给别人。",
+
+    tags:["快乐","好奇","活泼","生活感"],
+
+    traits:{
+        "敏感度":69,
+        "独立性":72,
+        "依赖感":73,
+        "浪漫度":83
+    },
+
+    love:"你喜欢轻松自然的关系。一起吃饭、散步、看电影，甚至一起发呆，对你来说都可以成为很幸福的事情。",
+
+    hidden:"你看起来永远很快乐，但其实也会偷偷消化很多情绪。你只是不希望自己的坏情绪影响身边的人。",
+
+    quote:"“生活已经够忙了，所以我要认真收藏每一个开心瞬间。”"
+},
+
+{
+    id:"penguin",
+    name:"企鹅",
+    en:"THE PENGUIN",
+    emoji:"🐧",
+
+    intro:"你的灵魂是一只企鹅。你可能不是最会说甜言蜜语的人，却非常擅长把喜欢藏进行动里。你慢热、认真，一旦建立信任，就会非常长情。",
+
+    tags:["深情","笨拙","稳定","行动派"],
+
+    traits:{
+        "敏感度":83,
+        "独立性":80,
+        "依赖感":67,
+        "浪漫度":77
+    },
+
+    love:"你很少轻易开始一段关系，但开始之后会认真经营。你可能不会天天说想念，却会记得对方喜欢吃什么、害怕什么、什么时候需要陪伴。",
+
+    hidden:"你的感情其实非常深，只是表达能力经常跟不上内心。很多时候不是你不说，而是你不知道应该怎么说。",
+
+    quote:"“我不会说很多漂亮话，但我会一直在。”"
+},
+
+{
+    id:"otter",
+    name:"水獭",
+    en:"THE OTTER",
+    emoji:"🦦",
+
+    intro:"你的灵魂是一只水獭。你天生自带一种让关系变得轻松的能力。熟悉之后，你会变得特别爱玩、爱笑，也很喜欢和重要的人黏在一起。",
+
+    tags:["快乐","黏人","社交","气氛担当"],
+
+    traits:{
+        "敏感度":76,
+        "独立性":57,
+        "依赖感":91,
+        "浪漫度":87
+    },
+
+    love:"你很需要陪伴感。一起吃饭、一起聊天、一起分享废话，对你来说就是爱情非常重要的一部分。你喜欢那种“什么都可以说”的关系。",
+
+    hidden:"你越是喜欢一个人，越容易变成小朋友。嘴硬可能只持续三分钟，想念却能持续一整天。",
+
+    quote:"“如果喜欢你，那我大概会忍不住一直靠近你。”"
+},
+
+{
+    id:"wolf",
+    name:"小狼",
+    en:"THE WOLF",
+    emoji:"🐺",
+
+    intro:"你的灵魂是一只小狼。你拥有很强的独立性，不喜欢被安排，也不喜欢按照别人规定好的路线生活。你有自己的目标，也有自己的骄傲。",
+
+    tags:["独立","野心","自由","坚定"],
+
+    traits:{
+        "敏感度":72,
+        "独立性":98,
+        "依赖感":42,
+        "浪漫度":69
+    },
+
+    love:"你需要的是并肩，而不是束缚。你可以深爱一个人，但依然希望拥有自己的空间。真正适合你的关系，是两个人都有自己的世界，却愿意互相靠近。",
+
+    hidden:"你其实非常重感情，只是不愿意承认自己需要谁。真正走进你心里的人，往往会得到你非常坚定的偏爱。",
+
+    quote:"“我可以一个人走很远，但如果你愿意，我想和你并肩。”"
+},
+
+{
+    id:"koala",
+    name:"考拉",
+    en:"THE KOALA",
+    emoji:"🐨",
+
+    intro:"你的灵魂是一只考拉。你喜欢稳定、舒服、熟悉的生活节奏。你不喜欢太多戏剧性，也不喜欢忽冷忽热的人。对你来说，安全感本身就是一种浪漫。",
+
+    tags:["慢热","稳定","依赖","安全感"],
+
+    traits:{
+        "敏感度":79,
+        "独立性":60,
+        "依赖感":93,
+        "浪漫度":75
+    },
+
+    love:"你一旦信任一个人，就会慢慢产生很深的依赖。你喜欢固定的陪伴、熟悉的生活习惯，以及那种不用解释就能被理解的默契。",
+
+    hidden:"你表面上说“都可以”，其实对熟悉的人和熟悉的生活有很强的依赖。改变对你来说，比别人想象中更难。",
+
+    quote:"“我想要的幸福其实很简单，就是每天都能看见你。”"
+},
+
+{
+    id:"hamster",
+    name:"仓鼠",
+    en:"THE HAMSTER",
+    emoji:"🐹",
+
+    intro:"你的灵魂是一只仓鼠。你看起来可能有一点迷糊、有一点可爱，但实际上你对生活中的细节拥有惊人的记忆力。别人无意间说过的话，你可能会默默记很久。",
+
+    tags:["细节控","可爱","记忆力","收藏家"],
+
+    traits:{
+        "敏感度":88,
+        "独立性":66,
+        "依赖感":78,
+        "浪漫度":89
+    },
+
+    love:"你很容易被细节打动。对方记得你的喜好、主动帮你留一份喜欢的东西、在你不舒服的时候发现你的异常，这些事情都能让你记很久。",
+
+    hidden:"你很容易在脑子里反复回放一段对话。别人可能早就忘了，你却还在想那句话到底是什么意思。",
+
+    quote:"“你随口说过的话，我可能偷偷记了一整个春天。”"
+},
+
+{
+    id:"butterfly",
+    name:"蝴蝶",
+    en:"THE BUTTERFLY",
+    emoji:"🦋",
+
+    intro:"你的灵魂是一只蝴蝶。你向往自由、变化和新鲜感，不喜欢一成不变的人生。你的情绪和兴趣都拥有很丰富的层次，因此你很难被一种标签定义。",
+
+    tags:["自由","灵动","浪漫","变化"],
+
+    traits:{
+        "敏感度":84,
+        "独立性":91,
+        "依赖感":55,
+        "浪漫度":94
+    },
+
+    love:"你需要一种既有爱又有空间的关系。你喜欢被爱，却不喜欢被占有。最吸引你的往往是一个愿意理解你的变化，同时又不会试图限制你的人。",
+
+    hidden:"你看起来很洒脱，但其实非常害怕失去自己的自由。你真正想要的不是逃离关系，而是在关系里依然可以做自己。",
+
+    quote:"“真正的爱不是把蝴蝶关进玻璃瓶，而是愿意陪它飞。”"
+}
+
+];
+
+
+/* =========================================================
+   18道题
+========================================================= */
+
+const questions = [
+
+{
+    text:"第一次来到一个完全陌生的聚会，你通常会？",
+    options:[
+        ["A","主动找人聊天，很快融入"],
+        ["B","先观察大家，找到合得来的人"],
+        ["C","安静待着，等别人主动"],
+        ["D","如果气氛有趣，我会很快玩起来"]
+    ]
+},
+
+{
+    text:"当你喜欢的人突然几个小时没有回复，你会？",
+    options:[
+        ["A","有点担心，会想知道发生了什么"],
+        ["B","先观察，不会马上打扰"],
+        ["C","表面无所谓，心里已经想很多"],
+        ["D","直接问他是不是在忙"]
+    ]
+},
+
+{
+    text:"如果朋友突然情绪低落，你第一反应是？",
+    options:[
+        ["A","陪着他，哪怕什么都不说"],
+        ["B","想办法让他开心起来"],
+        ["C","先观察他真正需要什么"],
+        ["D","给他空间，等他愿意说"]
+    ]
+},
+
+{
+    text:"你理想中的周末更接近？",
+    options:[
+        ["A","和喜欢的人待在家里"],
+        ["B","出去探索新的地方"],
+        ["C","一个人安静休息"],
+        ["D","约朋友吃饭聊天"]
+    ]
+},
+
+{
+    text:"别人第一次认识你，最容易觉得你？",
+    options:[
+        ["A","温柔好相处"],
+        ["B","有点神秘"],
+        ["C","活泼有趣"],
+        ["D","安静有距离感"]
+    ]
+},
+
+{
+    text:"你最不能接受一段关系里的什么？",
+    options:[
+        ["A","忽冷忽热"],
+        ["B","控制和束缚"],
+        ["C","不尊重边界"],
+        ["D","没有回应"]
+    ]
+},
+
+{
+    text:"别人随口说了一件小事，你通常会？",
+    options:[
+        ["A","很容易记住"],
+        ["B","当时记得，过几天可能忘了"],
+        ["C","如果是重要的人，我一定会记住"],
+        ["D","我会记下来或者放在心里"]
+    ]
+},
+
+{
+    text:"当你真正喜欢一个人以后，你会？",
+    options:[
+        ["A","越来越黏"],
+        ["B","默默照顾对方"],
+        ["C","嘴硬但会偷偷关注"],
+        ["D","希望和对方一起体验很多事情"]
+    ]
+},
+
+{
+    text:"你更喜欢哪一种表达爱的方式？",
+    options:[
+        ["A","一句认真说出口的“我爱你”"],
+        ["B","默默做很多事情"],
+        ["C","记得我所有的小习惯"],
+        ["D","愿意一直陪在身边"]
+    ]
+},
+
+{
+    text:"如果发生矛盾，你通常会？",
+    options:[
+        ["A","想马上把话说清楚"],
+        ["B","先冷静，等自己想明白"],
+        ["C","嘴上没事，心里其实很难过"],
+        ["D","希望对方主动来找我"]
+    ]
+},
+
+{
+    text:"你一个人的时候，最容易做什么？",
+    options:[
+        ["A","刷手机看各种东西"],
+        ["B","想很多事情"],
+        ["C","听歌、看电影或者发呆"],
+        ["D","研究一些新的东西"]
+    ]
+},
+
+{
+    text:"如果让你选择一种生活，你更想要？",
+    options:[
+        ["A","安稳舒服的生活"],
+        ["B","自由精彩的生活"],
+        ["C","和重要的人一起生活"],
+        ["D","不断变化、不断探索"]
+    ]
+},
+
+{
+    text:"别人夸你时，你最容易因为哪种话开心？",
+    options:[
+        ["A","你真的很温柔"],
+        ["B","你很聪明"],
+        ["C","和你在一起很舒服"],
+        ["D","你真的很特别"]
+    ]
+},
+
+{
+    text:"你最容易被什么瞬间打动？",
+    options:[
+        ["A","对方记住了我说过的话"],
+        ["B","对方在我需要时出现"],
+        ["C","一个突然的拥抱"],
+        ["D","对方愿意给我自由"]
+    ]
+},
+
+{
+    text:"如果你发现自己越来越依赖一个人，你会？",
+    options:[
+        ["A","很开心，因为我信任他"],
+        ["B","有一点害怕"],
+        ["C","嘴上否认，实际上很依赖"],
+        ["D","提醒自己保持自己的生活"]
+    ]
+},
+
+{
+    text:"你觉得自己最大的隐藏特点是？",
+    options:[
+        ["A","其实比看起来敏感很多"],
+        ["B","其实非常重感情"],
+        ["C","其实很需要陪伴"],
+        ["D","其实非常有自己的想法"]
+    ]
+},
+
+{
+    text:"如果朋友用一个动物形容你，你希望是？",
+    options:[
+        ["A","猫咪"],
+        ["B","小狗"],
+        ["C","狐狸"],
+        ["D","小鹿"]
+    ]
+},
+
+{
+    text:"最后一个问题。如果把你的人生比作一种感觉，你更接近？",
+    options:[
+        ["A","安静温暖的月光"],
+        ["B","自由吹过森林的风"],
+        ["C","冬天窝在被子里的安全感"],
+        ["D","夏天突然出现的一场大雨"]
+    ]
+}
+
+];
+
+
+/* =========================================================
+   测试逻辑
+========================================================= */
+
+let currentQuestion = 0;
+let answers = [];
+
+const questionText = document.getElementById("questionText");
+const questionNumber = document.getElementById("questionNumber");
+const optionsBox = document.getElementById("options");
+const nextBtn = document.getElementById("nextBtn");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+
+
+function startQuiz(){
+
+    currentQuestion = 0;
+    answers = [];
+
+    showScreen("quiz");
+
+    renderQuestion();
+}
+
+
+document.getElementById("startBtn")
+.addEventListener("click",startQuiz);
+
+
+function renderQuestion(){
+
+    const q = questions[currentQuestion];
+
+    questionNumber.textContent =
+        "QUESTION " +
+        String(currentQuestion + 1).padStart(2,"0");
+
+    progressText.textContent =
+        String(currentQuestion + 1).padStart(2,"0")
+        + " / "
+        + String(questions.length).padStart(2,"0");
+
+    progressBar.style.width =
+        ((currentQuestion) / questions.length * 100) + "%";
+
+    questionText.textContent = q.text;
+
+    optionsBox.innerHTML = "";
+
+    nextBtn.classList.remove("show");
+
+    q.options.forEach((option,index)=>{
+
+        const button = document.createElement("button");
+
+        button.className = "option";
+
+        button.innerHTML =
+            `<span class="option-letter">${option[0]}</span>${option[1]}`;
+
+        button.addEventListener("click",()=>{
+
+            document
+                .querySelectorAll(".option")
+                .forEach(item=>item.classList.remove("selected"));
+
+            button.classList.add("selected");
+
+            answers[currentQuestion] = index;
+
+            nextBtn.classList.add("show");
+
+        });
+
+        optionsBox.appendChild(button);
+
+    });
+}
+
+
+nextBtn.addEventListener("click",()=>{
+
+    if(answers[currentQuestion] === undefined){
+        return;
+    }
+
+    currentQuestion++;
+
+    if(currentQuestion >= questions.length){
+
+        calculateResult();
+
+    }else{
+
+        renderQuestion();
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+    }
+
+});
+
+
+/* =========================================================
+   自动评分
+========================================================= */
+
+function calculateResult(){
+
+    /*
+       12种动物初始分数
+    */
+
+    const scores = new Array(12).fill(0);
+
+    /*
+       每种题目的不同答案，
+       会对应不同动物。
+    */
+
+    const scoringMap = [
+
+        [
+            [1,7,10],
+            [2,3,11],
+            [0,4,5],
+            [6,8,9]
+        ],
+
+        [
+            [6,8,1],
+            [2,3,10],
+            [0,5,9],
+            [7,11,4]
+        ],
+
+        [
+            [5,3,9],
+            [2,0,7],
+            [1,10,4],
+            [6,8,11]
+        ],
+
+        [
+            [10,4,1],
+            [11,6,8],
+            [0,2,7],
+            [3,5,9]
+        ],
+
+        [
+            [3,4,10],
+            [2,7,11],
+            [0,5,6],
+            [1,8,9]
+        ],
+
+        [
+            [9,11,5],
+            [10,1,3],
+            [0,2,4],
+            [6,7,8]
+        ],
+
+        [
+            [1,6,8],
+            [2,10,11],
+            [0,4,7],
+            [3,5,9]
+        ],
+
+        [
+            [7,10,3],
+            [8,6,1],
+            [0,2,5],
+            [4,9,11]
+        ],
+
+        [
+            [1,8,6],
+            [7,10,4],
+            [0,2,3],
+            [11,5,9]
+        ],
+
+        [
+            [4,7,10],
+            [2,3,11],
+            [0,5,9],
+            [1,6,8]
+        ],
+
+        [
+            [11,5,10],
+            [3,4,7],
+            [0,1,6],
+            [2,8,9]
+        ],
+
+        [
+            [10,4,7],
+            [11,9,5],
+            [0,6,8],
+            [1,2,3]
+        ],
+
+        [
+            [3,10,1],
+            [2,4,7],
+            [0,5,9],
+            [6,8,11]
+        ],
+
+        [
+            [10,11,5],
+            [3,7,4],
+            [0,1,6],
+            [2,8,9]
+        ],
+
+        [
+            [8,11,6],
+            [7,10,4],
+            [0,5,9],
+            [1,2,3]
+        ],
+
+        [
+            [5,9,10],
+            [3,4,7],
+            [0,1,6],
+            [2,8,11]
+        ],
+
+        [
+            [0,1,2],
+            [4,7,10],
+            [5,9,11],
+            [3,6,8]
+        ],
+
+        [
+            [10,5,11],
+            [3,4,7],
+            [0,6,9],
+            [1,2,8]
+        ]
+
+    ];
+
+
+    answers.forEach((answer,index)=>{
+
+        const mapping = scoringMap[index][answer];
+
+        /*
+           一个答案同时给三个相关人格加分，
+           避免结果过于机械。
+        */
+
+        if(mapping){
+
+            scores[mapping[0]] += 5;
+            scores[mapping[1]] += 2.5;
+            scores[mapping[2]] += 1;
+
+        }
+
+    });
+
+
+    /*
+       找最高分
+    */
+
+    let winner = 0;
+
+    for(let i=1;i<scores.length;i++){
+
+        if(scores[i] > scores[winner]){
+            winner = i;
+        }
+
+    }
+
+    showResult(animals[winner],scores);
+
+}
+
+
+/* =========================================================
+   结果页面
+========================================================= */
+
+function showResult(animal,scores){
+
+    showScreen("result");
+
+    document.getElementById("resultAnimal").textContent =
+        animal.emoji;
+
+    document.getElementById("resultName").textContent =
+        animal.name;
+
+    document.getElementById("resultEn").textContent =
+        animal.en;
+
+    document.getElementById("resultIntro").textContent =
+        animal.intro;
+
+    document.getElementById("resultLove").textContent =
+        animal.love;
+
+    document.getElementById("resultHidden").textContent =
+        animal.hidden;
+
+    document.getElementById("resultQuote").textContent =
+        animal.quote;
+
+
+    const tags =
+        document.getElementById("resultTags");
+
+    tags.innerHTML = "";
+
+    animal.tags.forEach(tag=>{
+
+        const span = document.createElement("span");
+
+        span.className = "tag";
+
+        span.textContent = tag;
+
+        tags.appendChild(span);
+
+    });
+
+
+    const traits =
+        document.getElementById("traits");
+
+    traits.innerHTML = "";
+
+    Object.entries(animal.traits).forEach(([name,value])=>{
+
+        const row = document.createElement("div");
+
+        row.className = "trait-row";
+
+        row.innerHTML = `
+            <span>${name}</span>
+            <div class="trait-bar">
+                <div class="trait-fill" style="width:${value}%"></div>
+            </div>
+            <span>${value}</span>
+        `;
+
+        traits.appendChild(row);
+
+    });
+
+
+    /*
+       保存当前结果，
+       方便复制。
+    */
+
+    window.currentAnimal = animal;
+
+}
+
+
+/* =========================================================
+   复制结果
+========================================================= */
+
+document.getElementById("shareBtn")
+.addEventListener("click",async()=>{
+
+    if(!window.currentAnimal){
+        return;
+    }
+
+    const animal = window.currentAnimal;
+
+    const text =
+`🐾 动物人格测试
+
+我的灵魂小动物是：${animal.emoji} ${animal.name}
+
+${animal.en}
+
+${animal.intro}
+
+我的关键词：
+${animal.tags.join(" · ")}
+
+「${animal.quote}」
+
+—— 灵魂动物档案`;
+
+    try{
+
+        await navigator.clipboard.writeText(text);
+
+        const btn =
+            document.getElementById("shareBtn");
+
+        const oldText = btn.textContent;
+
+        btn.textContent = "已复制结果 ✓";
+
+        setTimeout(()=>{
+            btn.textContent = oldText;
+        },2000);
+
+    }catch(e){
+
+        alert("复制失败，请长按选择文字复制。");
+
+    }
+
+});
+
+
+/* =========================================================
+   重新测试
+========================================================= */
+
+document.getElementById("restartBtn")
+.addEventListener("click",()=>{
+
+    currentQuestion = 0;
+    answers = [];
+
+    showScreen("intro");
+
+});
+
+
+</script>
+
+</body>
+</html>
